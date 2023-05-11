@@ -162,5 +162,4 @@ cython_debug/
 # Additions
 subsample
 large_sample
-example_data
 .DS_Store
