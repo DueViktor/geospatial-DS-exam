@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH --job-name=train_model_ablation_0        # Job name
+#SBATCH --output=job.%j.out      # Name of output file (%j expands to jobId)
+#SBATCH --cpus-per-task=32        # Schedule one core
+#SBATCH --time=22:00:00          # Run time (hh:mm:ss) - run for one hour max
+#SBATCH --partition=brown    # Run on either the Red or Brown queue
+
+# Print out the hostname of the node the job is running on
+
+python3 train_CNN.py -S
+
+
