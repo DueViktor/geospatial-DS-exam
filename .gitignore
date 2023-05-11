@@ -159,4 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Additions
 subsample
+large_sample
+example_data
+.DS_Store
