@@ -447,7 +447,7 @@ def run_one_month_at_a_time() -> None:
 if __name__ == "__main__":
     args = handle_args()
 
-    args["num_dpoints"] = 5
+    args["num_dpoints"] = 8000
 
     if args["exclude_layer"] == "run_all":
         run_all(args)
