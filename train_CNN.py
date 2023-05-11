@@ -145,7 +145,7 @@ class AGBM_CNN:
         # Create a PyTorch data loader
         train_data = torch.utils.data.TensorDataset(input_tensor, target_tensor)
         train_loader = torch.utils.data.DataLoader(
-            train_data, batch_size=1, shuffle=True, pin_memory_device=self.device
+            train_data, batch_size=1, shuffle=True
         )
 
         input_tensor = torch.stack([input_[idx] for idx in test_index])
@@ -153,9 +153,7 @@ class AGBM_CNN:
 
         # Create a PyTorch data loader
         val_data = torch.utils.data.TensorDataset(input_tensor, target_tensor)
-        val_loader = torch.utils.data.DataLoader(
-            train_data, batch_size=1, shuffle=True, pin_memory_device=self.device
-        )
+        val_loader = torch.utils.data.DataLoader(train_data, batch_size=1, shuffle=True)
 
         return train_loader, val_loader
 
@@ -176,6 +174,7 @@ class AGBM_CNN:
 
         for fold, fold_dict in folds.items():
             model = CNN(**param)
+            model.to(self.device)
 
             # Define the loss function and optimizer
             criterion = nn.MSELoss(reduction="mean")
@@ -194,6 +193,9 @@ class AGBM_CNN:
                 val_losses = []
 
                 for i, (inputs, labels) in tqdm(enumerate(train_loader)):
+                    inputs = inputs.to(self.device)
+                    labels = labels.to(self.device)
+
                     optimizer.zero_grad()
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
@@ -204,6 +206,9 @@ class AGBM_CNN:
                     cur_losses.append(train_loss)
 
                 for i, (val_X, val_y) in tqdm(enumerate(val_loader)):
+                    val_X = val_X.to(self.device)
+                    val_y = val_y.to(self.device)
+
                     outputs_val = model(val_X)
                     loss_val = criterion(outputs_val, val_y)
                     val_loss = np.round(np.sqrt(loss_val.item()), 5)
@@ -422,6 +427,11 @@ def satellite_run(args):
         AGBM_trainer.run()
         AGBM_trainer.save_results()
         folds = AGBM_trainer.folds
+
+
+def run_one_month_at_a_time() -> None:
+    """The target is still yearly output, but we only train on a single month at a time"""
+    return
 
 
 if __name__ == "__main__":
