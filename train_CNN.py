@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore", r"All-NaN (slice|axis) encountered")
 class AGBM_CNN:
     def __init__(
         self,
-        use_gpu=False,
+        use_gpu=True,
         num_dpoints=10,
         exclude_layer=None,
         num_input_channels=15,
@@ -83,7 +83,6 @@ class AGBM_CNN:
         max_chips=None,
         dir_tiles="data/sentinel/",
         dir_target="data/train_agbm/",
-        dir_test="data/test_features/",
     ):
         dataset = dl.SentinelDataset(
             tile_file=fpath,
@@ -146,7 +145,7 @@ class AGBM_CNN:
         # Create a PyTorch data loader
         train_data = torch.utils.data.TensorDataset(input_tensor, target_tensor)
         train_loader = torch.utils.data.DataLoader(
-            train_data, batch_size=1, shuffle=True
+            train_data, batch_size=1, shuffle=True, pin_memory_device=self.device
         )
 
         input_tensor = torch.stack([input_[idx] for idx in test_index])
@@ -154,7 +153,9 @@ class AGBM_CNN:
 
         # Create a PyTorch data loader
         val_data = torch.utils.data.TensorDataset(input_tensor, target_tensor)
-        val_loader = torch.utils.data.DataLoader(train_data, batch_size=1, shuffle=True)
+        val_loader = torch.utils.data.DataLoader(
+            train_data, batch_size=1, shuffle=True, pin_memory_device=self.device
+        )
 
         return train_loader, val_loader
 
@@ -231,7 +232,7 @@ class AGBM_CNN:
 
         return fold_metrics, model
 
-    def setup_training(self, folds, input_, target_, num_input_channels=14):
+    def setup_training(self, folds, input_, target_, num_input_channels=14) -> None:
         # Define the model parameters for each trial
 
         self.params = [
@@ -269,6 +270,8 @@ class AGBM_CNN:
             self.results[idx] = pd.DataFrame(train_metrics)
             self.models[idx] = model
 
+        return
+
     def load_all_datasets(self, paths):
         datasets = defaultdict(dict)
 
@@ -294,7 +297,7 @@ class AGBM_CNN:
 
         return fold_loaders, input_, target_
 
-    def save_results(self):
+    def save_results(self) -> None:
         timestamp = dt.now().strftime("%Y_%m_%d:%H_%M_%S")
         # TODO fix lige det her
         os.mkdir("model_outputs/{}/{}".format(self.start_time, timestamp))
@@ -320,17 +323,17 @@ class AGBM_CNN:
                 json.dump(params_to_save, fp)
 
             self.results[p].to_csv(cur_path + "/results.csv", index=None)
-
             torch.save(self.models[p].state_dict(), cur_path + "/model_state_dict")
+
+        return
 
     def run(self):
         paths = [
             {
-                "fpath": "subset.csv",
+                "fpath": "large_subset.csv",
                 "max_chips": None,
                 "dir_tiles": "large_sample/sentinel/",
                 "dir_target": "large_sample/target/",
-                "dir_test": "large_sample/test_features/",
             }
         ]
 
@@ -394,11 +397,8 @@ def run_all(args):
         args["num_input_channels"] = 14
 
         AGBM_trainer = AGBM_CNN(**args)
-
         AGBM_trainer.folds = folds
-
-        print(AGBM_trainer.run())
-
+        AGBM_trainer.run()
         AGBM_trainer.save_results()
 
 
@@ -418,9 +418,7 @@ def satellite_run(args):
         args["num_input_channels"] = 15 - len(channels)
 
         AGBM_trainer = AGBM_CNN(**args)
-
         AGBM_trainer.fold_loaders = folds
-
         AGBM_trainer.run()
         AGBM_trainer.save_results()
         folds = AGBM_trainer.folds
@@ -436,10 +434,3 @@ if __name__ == "__main__":
 
     elif args["exclude_layer"] == "satellite":
         satellite_run(args)
-
-    else:
-        AGBM_trainer = AGBM_CNN(**args)
-
-        print(AGBM_trainer.run())
-
-        AGBM_trainer.save_results()
