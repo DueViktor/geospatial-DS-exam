@@ -332,15 +332,25 @@ class AGBM_CNN:
 
         return
 
-    def run(self):
-        paths = [
-            {
-                "fpath": "large_subset.csv",
-                "max_chips": None,
-                "dir_tiles": "large_sample/sentinel/",
-                "dir_target": "large_sample/target/",
-            }
-        ]
+    def run(self, fpath=None):
+        if fpath is None:
+            paths = [
+                {
+                    "fpath": "large_subset.csv",
+                    "max_chips": None,
+                    "dir_tiles": "large_sample/sentinel/",
+                    "dir_target": "large_sample/target/",
+                }
+            ]
+        else:
+            paths = [
+                {
+                    "fpath": fpath,
+                    "max_chips": None,
+                    "dir_tiles": "large_sample/sentinel/",
+                    "dir_target": "large_sample/target/",
+                }
+            ]
 
         folds, input_, target_ = self.load_all_datasets(paths)
         self.folds, self.input_, self.target_ = folds, input_, target_
@@ -437,10 +447,31 @@ def run_one_month_at_a_time() -> None:
 if __name__ == "__main__":
     args = handle_args()
 
-    args["num_dpoints"] = 10
+    args["num_dpoints"] = 5
 
     if args["exclude_layer"] == "run_all":
         run_all(args)
 
     elif args["exclude_layer"] == "satellite":
         satellite_run(args)
+
+    else:
+        month_files = [
+            "0.csv",  # september
+            "1.csv",  # october
+            "2.csv",  # november
+            "3.csv",  # december
+            "4.csv",  # january
+            "5.csv",  # february
+            "6.csv",  # march
+            "7.csv",  # april
+            "8.csv",  # may
+            "9.csv",  # june
+            "10.csv",  # july
+            "11.csv",  # august
+        ]
+
+        for month in month_files:
+            AGBM_trainer = AGBM_CNN(**args)
+            AGBM_trainer.run(fpath=month)
+            AGBM_trainer.save_results()
