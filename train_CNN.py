@@ -439,15 +439,10 @@ def satellite_run(args):
         folds = AGBM_trainer.folds
 
 
-def run_one_month_at_a_time() -> None:
-    """The target is still yearly output, but we only train on a single month at a time"""
-    return
-
-
 if __name__ == "__main__":
     args = handle_args()
 
-    args["num_dpoints"] = 8000
+    args["num_dpoints"] = None
 
     if args["exclude_layer"] == "run_all":
         run_all(args)
