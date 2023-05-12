@@ -442,7 +442,7 @@ def satellite_run(args):
 if __name__ == "__main__":
     args = handle_args()
 
-    args["num_dpoints"] = None
+    args["num_dpoints"] = 10
 
     if args["exclude_layer"] == "run_all":
         run_all(args)
