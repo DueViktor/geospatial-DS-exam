@@ -1,34 +1,35 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import os
 import json
-from collections import defaultdict
-import numpy as np
-import torch.nn as nn
-from tqdm import tqdm
-import data_loader as dl
+import os
 import random
+from collections import defaultdict
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import rasterio
 import torch
+import torch.nn as nn
+from tqdm import tqdm
 
-
+import data_loader as dl
 
 months = [
-        "Sept",
-        "Oct",
-        "Nov",
-        "Dec",
-        "Jan",
-        "Feb",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "Aug",
-    ]
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Aug",
+]
 
 # Simple plotting utils made complicated
+
 
 def aggregate_result(df, index):
     agg_df = df.groupby("epoch").mean()
@@ -37,9 +38,7 @@ def aggregate_result(df, index):
     return agg_df
 
 
-def plot_single_config(data_dir,idx = 0):
-
-
+def plot_single_config(data_dir, idx=0):
     config_dir = os.listdir(data_dir)[idx]
 
     dfs = {}
@@ -74,8 +73,7 @@ def plot_single_config(data_dir,idx = 0):
         plt.show()
 
 
-
-def get_best_model(idx, data_dir, eval_metrix="val_loss_median",w_index=False):
+def get_best_model(idx, data_dir, eval_metrix="val_loss_median", w_index=False):
     # idx references the index of the global configuration (i.e. ablation-setting)
     # model_outputs/study/[ablation_idx]/[config_idx]
     # This means that this function returns the best model for a given ablation study (fx excluding channel 0 or channel 1 or satellite 2...)
@@ -110,16 +108,14 @@ def get_best_model(idx, data_dir, eval_metrix="val_loss_median",w_index=False):
             best_agg = agg_df
 
     if w_index:
-
-        return best_agg, configurations[cur_min_index],cur_min_index
+        return best_agg, configurations[cur_min_index], cur_min_index
     else:
         return best_agg, configurations[cur_min_index]
 
 
-def plot_best_config(data_dir,idx = 0):
+def plot_best_config(data_dir, idx=0):
+    best_agg, conf = get_best_model(idx, data_dir)
 
-    best_agg,conf = get_best_model(idx, data_dir)
-    
     print(conf)
 
     plt.style.use("fivethirtyeight")
@@ -129,21 +125,24 @@ def plot_best_config(data_dir,idx = 0):
     plt.show()
 
 
-def performance_plots(data_dir,max_num=-1):
+def performance_plots(data_dir, max_num=-1):
     plt.style.use("fivethirtyeight")
     fig = plt.figure(figsize=[16, 9])
     range_ = len(os.listdir(data_dir)[:max_num])
     for idx in range(range_):
         res, conf = get_best_model(idx, data_dir)
-        res["val_loss_median"].plot(linewidth=2,color='green')
+        res["val_loss_median"].plot(linewidth=2, color="green")
         plt.ylim([60, 100])
     plt.title("Performance of different models in " + data_dir)
     plt.show()
 
 
-
 def plot_ablation(
-    data_dir, metric="val_loss_median", id_="exclude_layer_name", title="sometitle",vline=None
+    data_dir,
+    metric="val_loss_median",
+    id_="exclude_layer_name",
+    title="sometitle",
+    vline=None,
 ):
     result_dict = {}
     param_dict = {}
@@ -172,14 +171,21 @@ def plot_ablation(
         }
     ).sort_values("r-mse", ascending=False)
 
-    plot_df.plot(kind="barh", x="excluded_channel", figsize=[16, 9], xlim=[40, 95],color='green')
+    plot_df.plot(
+        kind="barh", x="excluded_channel", figsize=[16, 9], xlim=[40, 95], color="green"
+    )
 
     if vline:
-        plt.vlines(plot_df.loc[plot_df['excluded_channel']==vline]['r-mse'].values[0],
-                  -1,99, color = 'red',linewidth = 1.5)
+        plt.vlines(
+            plot_df.loc[plot_df["excluded_channel"] == vline]["r-mse"].values[0],
+            -1,
+            99,
+            color="red",
+            linewidth=1.5,
+        )
     plt.title(title)
     plt.tight_layout()
-    plt.savefig("{}.png".format(title))
+    plt.savefig("assets/{}.png".format(title))
 
     plt.show()
 
@@ -258,12 +264,11 @@ def predict(model, indexes, num_dpoints=100, fpath="large_subset.csv"):
     return metrics
 
 
-def single_predict(model,chip_id,df,fpath):
-    
+def single_predict(model, chip_id, df, fpath):
     criterion = nn.MSELoss(reduction="mean")
-    
-    ix = df.loc[df["chipid"]==chip_id].index.values[0]
-    
+
+    ix = df.loc[df["chipid"] == chip_id].index.values[0]
+
     loader = create_dataloader_from_indexes([ix], fpath, num_dpoints=1)
 
     cur_losses = []
@@ -273,17 +278,14 @@ def single_predict(model,chip_id,df,fpath):
 
         train_loss = np.round(np.sqrt(loss.item()), 5)
 
-        
-
-        return outputs.detach().numpy(),train_loss
-    
-
+        return outputs.detach().numpy(), train_loss
 
 
 # Code to select the best performing model from a certain study
 
-from train_CNN import CNN
 import torch
+
+from train_CNN import CNN
 
 
 def get_model_args(args):
@@ -331,11 +333,10 @@ def get_best_model_index(idx, data_dir, eval_metrix="val_loss_median"):
             cur_min = m
             cur_min_index = index
 
-
     return cur_min_index
 
 
-def get_model_path(ablation_index, data_dir,bmx=None):
+def get_model_path(ablation_index, data_dir, bmx=None):
     if not bmx:
         bmx = get_best_model_index(ablation_index, data_dir)
 
@@ -344,45 +345,38 @@ def get_model_path(ablation_index, data_dir,bmx=None):
     return data_dir + config_dir + "/" + str(bmx) + "/model_state_dict"
 
 
-
-
 # Create random monthly datasets
-def create_monthly_datasets(num_chips = 100):
+def create_monthly_datasets(num_chips=100):
     ls = (
-    pd.read_csv("large_subset.csv", index_col=0)
-    .drop_duplicates()
-    .reset_index()
-    .drop("index", axis=1)
-    .sort_index(ascending=False)
+        pd.read_csv("large_subset.csv", index_col=0)
+        .drop_duplicates()
+        .reset_index()
+        .drop("index", axis=1)
+        .sort_index(ascending=False)
     )
 
     ls.sort_index(inplace=True)
 
-
     indexes = defaultdict(list)
     for chip in range(num_chips):
-
         random_chip = random.choice(ls["chipid"].unique())
-        
+
         for month in range(12):
             ix = ls.loc[
                 (ls["month"] == month) & (ls["chipid"] == random_chip)
             ].index.values[0]
-            
+
             indexes[month].append(ix)
-            
+
         for month in range(12):
             ls.iloc[indexes[month]].to_csv("subset_{}_{}.csv".format(num_chips, month))
-        
 
 
-def get_model_from_path(data_dir,ablation_index=0):
-
+def get_model_from_path(data_dir, ablation_index=0):
     # Chose a random model (e.g. excluding some layer)
     # standard is to use the full model
 
-    results, params,ix = get_best_model(ablation_index, data_dir,w_index=True)
-
+    results, params, ix = get_best_model(ablation_index, data_dir, w_index=True)
 
     PATH = get_model_path(ix, data_dir)
 
@@ -391,9 +385,7 @@ def get_model_from_path(data_dir,ablation_index=0):
     model.load_state_dict(torch.load(PATH))
     model.eval()
 
-
     return model
-
 
 
 def evaluate_monthly(model):
@@ -415,25 +407,22 @@ def evaluate_monthly(model):
     ]
 
     for month in range(12):
-        print("EVALUATING MODEL ON",months[month])
+        print("EVALUATING MODEL ON", months[month])
         fpath = "subset_100_{}.csv".format(month)
         perfs.append(
-            predict(model, indexes=[i for i in range(100)], num_dpoints=100, fpath=fpath)
+            predict(
+                model, indexes=[i for i in range(100)], num_dpoints=100, fpath=fpath
+            )
         )
-
 
     y = [p["train_loss_median"] for p in perfs]
 
-    
-
     plt.figure(figsize=[16, 9])
-    plt.bar(x=months, height=y,color='green')
+    plt.bar(x=months, height=y, color="green")
     plt.title("Performance on different months")
     plt.tight_layout()
-    plt.savefig("months.png")
+    plt.savefig("assets/months.png")
     plt.show()
-
-
 
 
 def evaluate_monthly_multiple(models):
@@ -455,55 +444,52 @@ def evaluate_monthly_multiple(models):
     ]
 
     for month in range(12):
-        print("EVALUATING MODEL ON",months[month])
+        print("EVALUATING MODEL ON", months[month])
         fpath = "subset_100_{}.csv".format(month)
         model = models[month]
         perfs.append(
-            predict(model, indexes=[i for i in range(100)], num_dpoints=100, fpath=fpath)
+            predict(
+                model, indexes=[i for i in range(100)], num_dpoints=100, fpath=fpath
+            )
         )
-
 
     y = [p["train_loss_median"] for p in perfs]
 
-    
-
     plt.figure(figsize=[16, 9])
-    plt.bar(x=months, height=y,color='green')
+    plt.bar(x=months, height=y, color="green")
     plt.title("Performance on different months")
     plt.tight_layout()
-    plt.savefig("months.png")
+    plt.savefig("assets/months.png")
     plt.show()
 
 
 def get_best_model_pr_month(data_dir):
     models = []
-    for month in range(0,12):
-        model = get_model_from_path(data_dir,month)
+    for month in range(0, 12):
+        model = get_model_from_path(data_dir, month)
         models.append(model)
     return models
+
 
 # Load single target datapoint
 def _read_tif_to_tensor(tif_path):
     with rasterio.open(tif_path) as src:
-        X = torch.tensor(src.read().astype(np.float32),
-                            dtype=torch.float32,
-                            device='cpu',
-                            requires_grad=False,
-                            )
+        X = torch.tensor(
+            src.read().astype(np.float32),
+            dtype=torch.float32,
+            device="cpu",
+            requires_grad=False,
+        )
     return X
-
-
 
 
 # HJÆLP
 def barplot_3D(t):
     num_vals = 50
 
+    mat = np.matrix(t.reshape([256, 256]))
 
-    mat = np.matrix(t.reshape([256,256]))
-
-
-    mat = mat[:num_vals,:num_vals]
+    mat = mat[:num_vals, :num_vals]
 
     z = []
     for row in np.array(mat).tolist():
@@ -512,7 +498,7 @@ def barplot_3D(t):
 
     # set up the figure and axes
     fig = plt.figure(figsize=(16, 9))
-    ax1 = fig.add_subplot(121, projection='3d')
+    ax1 = fig.add_subplot(121, projection="3d")
 
     # fake data
     _x = np.arange(num_vals)
@@ -524,48 +510,45 @@ def barplot_3D(t):
     bottom = np.zeros_like(top)
     width = depth = 1
 
-    ax1.bar3d(x, y, bottom, width, depth, top, shade=True,color = 'green')
-    ax1.set_title('BioMass')
-    
+    ax1.bar3d(x, y, bottom, width, depth, top, shade=True, color="green")
+    ax1.set_title("BioMass")
+
     return ax1
 
 
-
-
-def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None):
+def plot_agbm(t=None, chip_id=None, model=None, df=None, fpath=None):
     if not t and not chip_id:
-        return 'INPUT DATA YOU DUMBDUMB'
-    
+        return "INPUT DATA YOU DUMBDUMB"
+
     elif chip_id:
-        t = _read_tif_to_tensor('large_sample/target/{}_agbm.tif'.format(chip_id))
+        t = _read_tif_to_tensor("large_sample/target/{}_agbm.tif".format(chip_id))
     elif t:
         pass
 
-    
-    if model!=None:
-        t_est,score = single_predict(model,chip_id,df,fpath)
-        
-        ts = [t,t_est]
-        
-        fig,axes = plt.subplots(1,2)
+    if model != None:
+        t_est, score = single_predict(model, chip_id, df, fpath)
+
+        ts = [t, t_est]
+
+        fig, axes = plt.subplots(1, 2)
         for i in range(len(axes)):
             axes[i] = barplot_3D(ts[i])
         plt.show()
-            
-        
+
         barplot_3D(t)
         barplot_3D(t_est)
-        print('ERROR',score)
+        print("ERROR", score)
     else:
         barplot_3D(t)
-    
+
+
 # SLUT HJÆLP
 
 
 def get_subset_from_month(month):
     index = months.index(month)
-    fpath = 'subset_100_{}.csv'.format(index)
-    df = pd.read_csv(fpath).drop('Unnamed: 0',axis=1)
-    chip_id = df['chipid'].values.tolist()[0]
+    fpath = "subset_100_{}.csv".format(index)
+    df = pd.read_csv(fpath).drop("Unnamed: 0", axis=1)
+    chip_id = df["chipid"].values.tolist()[0]
 
-    return chip_id,fpath,df
+    return chip_id, fpath, df
