@@ -1,0 +1,1 @@
+{"num_input_channels": 14, "conv_filters1": 8, "conv_filters2": 16, "conv_filters3": 16, "num_dpoints": 6000, "exclude_layer": 7, "exclude_layer_name": "S2-B8A: NarrowNIR-864nm-20m", "num_epochs": 1}

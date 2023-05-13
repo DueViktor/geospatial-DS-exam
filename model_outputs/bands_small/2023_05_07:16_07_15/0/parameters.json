@@ -1,0 +1,1 @@
+{"num_input_channels": 14, "conv_filters1": 4, "conv_filters2": 8, "conv_filters3": 4, "num_dpoints": 6000, "exclude_layer": 1, "exclude_layer_name": "S2-B3: Green-10m", "num_epochs": 1}

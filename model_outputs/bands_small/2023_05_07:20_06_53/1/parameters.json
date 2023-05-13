@@ -1,0 +1,1 @@
+{"num_input_channels": 14, "conv_filters1": 8, "conv_filters2": 16, "conv_filters3": 16, "num_dpoints": 6000, "exclude_layer": 10, "exclude_layer_name": "S2-CLP: Clouse_gpuudProb-160m", "num_epochs": 1}
