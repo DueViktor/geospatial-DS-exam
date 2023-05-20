@@ -163,3 +163,4 @@ cython_debug/
 subsample
 large_sample
 .DS_Store
+subset_100_*
