@@ -457,7 +457,7 @@ def evaluate_monthly_multiple(models):
 
     plt.figure(figsize=[16, 9])
     plt.bar(x=months, height=y, color="green")
-    plt.title("Performance on different months")
+    plt.title("RMSE performance on all months")
     plt.tight_layout()
     plt.savefig("assets/months.png")
     plt.show()
