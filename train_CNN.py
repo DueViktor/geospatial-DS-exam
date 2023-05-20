@@ -77,6 +77,8 @@ class AGBM_CNN:
         else:
             self.device = torch.device("cpu")
 
+        print(self)
+
     def load_single_SentinelDataset(
         self,
         fpath="subset.csv",
@@ -331,7 +333,6 @@ class AGBM_CNN:
             torch.save(self.models[p].state_dict(), cur_path + "/model_state_dict")
 
         return
-
 
     def run(self, fpath=None):
         if fpath is None:
