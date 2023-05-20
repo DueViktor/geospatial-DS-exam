@@ -332,6 +332,7 @@ class AGBM_CNN:
 
         return
 
+
     def run(self, fpath=None):
         if fpath is None:
             paths = [
