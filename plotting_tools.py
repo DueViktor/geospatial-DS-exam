@@ -460,11 +460,7 @@ def evaluate_monthly_multiple(models):
     plt.bar(x=months, height=y, color="green")
     plt.title("RMSE performance on all months")
     plt.tight_layout()
-<<<<<<< HEAD
     plt.savefig("months_mult.png")
-=======
-    plt.savefig("assets/months.png")
->>>>>>> 6336e4d1c87dc99bfab65f0d23e6494ffc30dc76
     plt.show()
 
 
@@ -502,13 +498,8 @@ def barplot_3D(t,ax1,title=''):
             z.append(i)
 
     # set up the figure and axes
-<<<<<<< HEAD
     #fig = plt.figure(figsize=(16, 9))
     #ax1 = fig.add_subplot(121, projection='3d')
-=======
-    fig = plt.figure(figsize=(16, 9))
-    ax1 = fig.add_subplot(121, projection="3d")
->>>>>>> 6336e4d1c87dc99bfab65f0d23e6494ffc30dc76
 
     # fake data
     _x = np.arange(num_vals)
@@ -520,7 +511,6 @@ def barplot_3D(t,ax1,title=''):
     bottom = np.zeros_like(top)
     width = depth = 1
 
-<<<<<<< HEAD
     ax1.bar3d(x, y, bottom, width, depth, top, shade=True,color = 'green')
     ax1.set_title('BioMass '+title)
     
@@ -530,20 +520,10 @@ def barplot_3D(t,ax1,title=''):
 
 
 def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None,month=''):
-=======
-    ax1.bar3d(x, y, bottom, width, depth, top, shade=True, color="green")
-    ax1.set_title("BioMass")
-
-    return ax1
-
-
-def plot_agbm(t=None, chip_id=None, model=None, df=None, fpath=None):
->>>>>>> 6336e4d1c87dc99bfab65f0d23e6494ffc30dc76
     if not t and not chip_id:
         return "INPUT DATA YOU DUMBDUMB"
 
     elif chip_id:
-<<<<<<< HEAD
         t = _read_tif_to_tensor('large_sample/target/{}_agbm.tif'.format(chip_id))
         m = max(t.flatten())
         m +=m/10
@@ -570,25 +550,6 @@ def plot_agbm(t=None, chip_id=None, model=None, df=None, fpath=None):
         #barplot_3D(t)
         #barplot_3D(t_est)
         print('ERROR',score)
-=======
-        t = _read_tif_to_tensor("large_sample/target/{}_agbm.tif".format(chip_id))
-    elif t:
-        pass
-
-    if model != None:
-        t_est, score = single_predict(model, chip_id, df, fpath)
-
-        ts = [t, t_est]
-
-        fig, axes = plt.subplots(1, 2)
-        for i in range(len(axes)):
-            axes[i] = barplot_3D(ts[i])
-        plt.show()
-
-        barplot_3D(t)
-        barplot_3D(t_est)
-        print("ERROR", score)
->>>>>>> 6336e4d1c87dc99bfab65f0d23e6494ffc30dc76
     else:
         barplot_3D(t)
 
