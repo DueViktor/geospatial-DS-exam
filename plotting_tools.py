@@ -124,8 +124,9 @@ def plot_best_config(data_dir,idx = 0):
 
     plt.style.use("fivethirtyeight")
 
-    best_agg[["train_loss_median", "val_loss_median"]].plot(figsize=[16, 9])
+    best_agg[["train_loss_median", "val_loss_median"]].plot(figsize=[16, 9],title='test/validation RMSE over 10 epochs')
     plt.ylim([70, 90])
+    plt.savefig('best_config.png')
     plt.show()
 
 
@@ -471,7 +472,7 @@ def evaluate_monthly_multiple(models):
     plt.bar(x=months, height=y,color='green')
     plt.title("Performance on different months")
     plt.tight_layout()
-    plt.savefig("months.png")
+    plt.savefig("months_mult.png")
     plt.show()
 
 
@@ -496,8 +497,8 @@ def _read_tif_to_tensor(tif_path):
 
 
 # HJÆLP
-def barplot_3D(t):
-    num_vals = 50
+def barplot_3D(t,ax1,title=''):
+    num_vals = 100
 
 
     mat = np.matrix(t.reshape([256,256]))
@@ -511,8 +512,8 @@ def barplot_3D(t):
             z.append(i)
 
     # set up the figure and axes
-    fig = plt.figure(figsize=(16, 9))
-    ax1 = fig.add_subplot(121, projection='3d')
+    #fig = plt.figure(figsize=(16, 9))
+    #ax1 = fig.add_subplot(121, projection='3d')
 
     # fake data
     _x = np.arange(num_vals)
@@ -525,19 +526,21 @@ def barplot_3D(t):
     width = depth = 1
 
     ax1.bar3d(x, y, bottom, width, depth, top, shade=True,color = 'green')
-    ax1.set_title('BioMass')
+    ax1.set_title('BioMass '+title)
     
-    return ax1
+    #return ax1
 
 
 
 
-def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None):
+def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None,month=''):
     if not t and not chip_id:
         return 'INPUT DATA YOU DUMBDUMB'
     
     elif chip_id:
         t = _read_tif_to_tensor('large_sample/target/{}_agbm.tif'.format(chip_id))
+        m = max(t.flatten())
+        m +=m/10
     elif t:
         pass
 
@@ -546,15 +549,20 @@ def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None):
         t_est,score = single_predict(model,chip_id,df,fpath)
         
         ts = [t,t_est]
+        titles = [f'Ground Truth ({chip_id})',f'Estimate ({month}) | RMSE: '+str(round(score,2))]
         
-        fig,axes = plt.subplots(1,2)
+        fig,axes = plt.subplots(1,2,subplot_kw=dict(projection='3d'),figsize=[16,9])
         for i in range(len(axes)):
-            axes[i] = barplot_3D(ts[i])
-        plt.show()
+            barplot_3D(ts[i],axes[i],title=titles[i])
             
-        
-        barplot_3D(t)
-        barplot_3D(t_est)
+        # Adjust spacing between subplots
+        fig.subplots_adjust(wspace=0.2)
+        plt.savefig(f'{month}.png')
+        # Show the plots
+        plt.show()
+
+        #barplot_3D(t)
+        #barplot_3D(t_est)
         print('ERROR',score)
     else:
         barplot_3D(t)
