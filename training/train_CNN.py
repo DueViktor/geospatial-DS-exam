@@ -5,17 +5,16 @@ import warnings
 from collections import defaultdict
 from datetime import datetime as dt
 
+import data_loader as dl
 import numpy as np
 import pandas as pd
 import rasterio
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from CNN import CNN
 from sklearn.model_selection import KFold
 from tqdm import tqdm
-
-import data_loader as dl
-from CNN import CNN
 
 warnings.filterwarnings("ignore", category=rasterio.errors.NotGeoreferencedWarning)
 warnings.filterwarnings("ignore", r"All-NaN (slice|axis) encountered")
