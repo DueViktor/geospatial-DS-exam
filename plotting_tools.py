@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rasterio
+from rasterio.plot import show
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -120,11 +121,9 @@ def plot_best_config(data_dir, idx=0):
 
     plt.style.use("fivethirtyeight")
 
-    best_agg[["train_loss_median", "val_loss_median"]].plot(
-        figsize=[16, 9], title="test/validation RMSE over 10 epochs"
-    )
-    plt.ylim([70, 90])
-    plt.savefig("best_config.png")
+    best_agg[["train_loss_median", "val_loss_median"]].plot(figsize=[16, 9],title='test/validation RMSE over 10 epochs')
+    plt.ylim([70, 82])
+    plt.savefig('assets/best_config.png')
     plt.show()
 
 
@@ -167,12 +166,19 @@ def plot_ablation(
 
     plt.style.use("fivethirtyeight")
 
+    if id_ == 'exclude_layer':
+        mapping = {"None":"None",
+                   str([11, 12, 13, 14]):'S1',
+                   str([i for i in range(11)]):'S2'}
+        excluded_channel_ = [mapping[str(i)] for i in excluded_channel]
+        excluded_channel = excluded_channel_
     plot_df = pd.DataFrame(
         {
             "excluded_channel": excluded_channel,
             "r-mse": average_validation_rmse_final_epoch,
         }
     ).sort_values("r-mse", ascending=False)
+
 
     plot_df.plot(
         kind="barh", x="excluded_channel", figsize=[16, 9], xlim=[40, 95], color="green"
@@ -246,7 +252,7 @@ def create_dataloader_from_indexes(indexes, fpath, exclude_layer=None, num_dpoin
     return test_loader
 
 
-def predict(model, indexes, num_dpoints=100, fpath="large_subset.csv"):
+def predict(model,indexes,num_dpoints=100, fpath="large_subset.csv"):
     metrics = dict()
     # Define the loss function and optimizer
     criterion = nn.MSELoss(reduction="mean")
@@ -272,7 +278,7 @@ def single_predict(model, chip_id, df, fpath):
 
     ix = df.loc[df["chipid"] == chip_id].index.values[0]
 
-    loader = create_dataloader_from_indexes([ix], fpath, num_dpoints=1)
+    loader = create_dataloader_from_indexes([ix], fpath, num_dpoints=100)
 
     cur_losses = []
     for i, (inputs, labels) in tqdm(enumerate(loader)):
@@ -372,7 +378,7 @@ def create_monthly_datasets(num_chips=100):
             indexes[month].append(ix)
 
         for month in range(12):
-            ls.iloc[indexes[month]].to_csv("subset_{}_{}.csv".format(num_chips, month))
+            ls.iloc[indexes[month]].to_csv("subsets/subset_{}_{}.csv".format(num_chips, month))
 
 
 def get_model_from_path(data_dir, ablation_index=0):
@@ -380,10 +386,7 @@ def get_model_from_path(data_dir, ablation_index=0):
     # standard is to use the full model
 
     results, params, ix = get_best_model(ablation_index, data_dir, w_index=True)
-    print(ix)
-
     PATH = get_model_path(ix, data_dir)
-    print(PATH)
     model_args = get_model_args(params)
     model = CNN(**model_args)
     model.load_state_dict(torch.load(PATH))
@@ -412,7 +415,7 @@ def evaluate_monthly(model):
 
     for month in range(12):
         print("EVALUATING MODEL ON", months[month])
-        fpath = "subset_100_{}.csv".format(month)
+        fpath = "subsets/subset_100_{}.csv".format(month)
         perfs.append(
             predict(
                 model, indexes=[i for i in range(100)], num_dpoints=100, fpath=fpath
@@ -449,7 +452,7 @@ def evaluate_monthly_multiple(models):
 
     for month in range(12):
         print("EVALUATING MODEL ON", months[month])
-        fpath = "subset_100_{}.csv".format(month)
+        fpath = "subsets/subset_100_{}.csv".format(month)
         model = models[month]
         perfs.append(
             predict(
@@ -463,7 +466,7 @@ def evaluate_monthly_multiple(models):
     plt.bar(x=months, height=y, color="green")
     plt.title("RMSE performance on all months")
     plt.tight_layout()
-    plt.savefig("months_mult.png")
+    plt.savefig("assets/months_mult.png")
     plt.show()
 
 
@@ -488,7 +491,7 @@ def _read_tif_to_tensor(tif_path):
 
 
 # HJÆLP
-def barplot_3D(t, ax1, title=""):
+def barplot_3D(t,ax1,title=''):
     num_vals = 100
 
     mat = np.matrix(t.reshape([256, 256]))
@@ -501,8 +504,8 @@ def barplot_3D(t, ax1, title=""):
             z.append(i)
 
     # set up the figure and axes
-    # fig = plt.figure(figsize=(16, 9))
-    # ax1 = fig.add_subplot(121, projection='3d')
+    #fig = plt.figure(figsize=(16, 9))
+    #ax1 = fig.add_subplot(121, projection='3d')
 
     # fake data
     _x = np.arange(num_vals)
@@ -514,58 +517,128 @@ def barplot_3D(t, ax1, title=""):
     bottom = np.zeros_like(top)
     width = depth = 1
 
-    ax1.bar3d(x, y, bottom, width, depth, top, shade=True, color="green")
-    ax1.set_title("BioMass " + title)
+    ax1.bar3d(x, y, bottom, width, depth, top, shade=True,color = 'green')
+    ax1.set_title('BioMass '+title)
+    
+    #return ax1
 
-    # return ax1
 
 
-def plot_agbm(t=None, chip_id=None, model=None, df=None, fpath=None, month=""):
+
+def plot_agbm(t=None,chip_id=None,model=None,df=None,fpath=None,month=''):
     if not t and not chip_id:
         return "INPUT DATA YOU DUMBDUMB"
 
     elif chip_id:
-        t = _read_tif_to_tensor("large_sample/target/{}_agbm.tif".format(chip_id))
+        t = _read_tif_to_tensor('large_sample/target/{}_agbm.tif'.format(chip_id))
         m = max(t.flatten())
-        m += m / 10
+        m +=m/10
     elif t:
         pass
 
-    if model != None:
-        t_est, score = single_predict(model, chip_id, df, fpath)
-
-        ts = [t, t_est]
-        titles = [
-            f"Ground Truth ({chip_id})",
-            f"Estimate ({month}) | RMSE: " + str(round(score, 2)),
-        ]
-
-        fig, axes = plt.subplots(
-            1, 2, subplot_kw=dict(projection="3d"), figsize=[16, 9]
-        )
+    
+    if model!=None:
+        t_est,score = single_predict(model,chip_id,df,fpath)
+        
+        ts = [t,t_est]
+        titles = [f'Ground Truth ({chip_id})',f'Estimate ({month}) | RMSE: '+str(round(score,2))]
+        
+        fig,axes = plt.subplots(1,2,subplot_kw=dict(projection='3d'),figsize=[16,9])
         for i in range(len(axes)):
-            barplot_3D(ts[i], axes[i], title=titles[i])
-
+            barplot_3D(ts[i],axes[i],title=titles[i])
+            
         # Adjust spacing between subplots
         fig.subplots_adjust(wspace=0.2)
-        plt.savefig(f"{month}.png")
+        plt.savefig(f'assets/{month}.png')
         # Show the plots
         plt.show()
 
-        # barplot_3D(t)
-        # barplot_3D(t_est)
-        print("ERROR", score)
+        #barplot_3D(t)
+        #barplot_3D(t_est)
+        print('ERROR',score)
     else:
         barplot_3D(t)
 
 
-# SLUT HJÆLP
 
 
-def get_subset_from_month(month):
+def get_subset_from_month(month,chip_id=None):
     index = months.index(month)
-    fpath = "subset_100_{}.csv".format(index)
+    fpath = "subsets/subset_100_{}.csv".format(index)
     df = pd.read_csv(fpath).drop("Unnamed: 0", axis=1)
-    chip_id = df["chipid"].values.tolist()[0]
+    if chip_id and chip_id in df["chipid"].values.tolist():
+        return chip_id, fpath, df
+    else:
+        chip_id = df["chipid"].values.tolist()[0]
+        return chip_id, fpath, df
 
-    return chip_id, fpath, df
+
+
+def plot_input_data(chip_id):
+    channel_map = ["S2-B2: Blue-10m",
+                "S2-B3: Green-10m",
+                "S2-B4: Red-10m",
+                "S2-B5: VegRed-704nm-20m",
+                "S2-B6: VegRed-740nm-20m",
+                "S2-B7: VegRed-780nm-20m",
+                "S2-B8: NIR-833nm-10m",
+                "S2-B8A: NarrowNIR-864nm-20m",
+                "S2-B11: SWIR-1610nm-20m",
+                "S2-B12: SWIR-2200nm-20m",
+                "S2-CLP: Clouse_gpuudProb-160m",
+                "S1-VV-Asc: Cband-10m",
+                "S1-VH-Asc: Cband-10m",
+                "S1-VV-Desc: Cband-10m",
+                "S1-VH-Desc: Cband-10m"]
+
+    
+
+    fig,axes = plt.subplots(4,4,figsize=[29,20])
+    
+    ch = 0
+    cv = 0
+    cc = 0
+
+    fontdict = {'fontsize': 9,
+                'fontweight': 'light'}
+
+    fp = f'large_sample/sentinel/{chip_id}_S2_00.tif'
+    img = rasterio.open(fp)
+    for i in range(1,12):
+        name = channel_map[cc]
+        ax = axes[ch][cv]
+        show(img.read(i),title=name,ax=ax)
+        if ch < 3:
+            ch+=1
+            cc+=1
+        else:
+            ch=0
+            cv+=1
+            cc+=1
+
+
+    fp = f'large_sample/sentinel/{chip_id}_S1_00.tif'
+    img = rasterio.open(fp)
+    for i in range(1,5):
+        name = channel_map[cc]
+        ax = axes[ch][cv]
+        show(img.read(i),title=name,ax=ax)
+        if ch < 3:
+            ch+=1
+            cc+=1
+        else:
+            ch=0
+            cv+=1
+            cc+=1
+    
+
+    fp = f'large_sample/target/{chip_id}_agbm.tif'
+    img = rasterio.open(fp)
+    name = 'Target Values'
+    ax = axes[ch][cv]
+    show(img.read(),title=name,ax=ax)
+
+    #fig.delaxes(axes[ch,cv]) 
+    plt.suptitle(f"Input and target data for chip {chip_id}",fontsize=34)
+    
+    plt.savefig(f'assets/input_{chip_id}.png')
