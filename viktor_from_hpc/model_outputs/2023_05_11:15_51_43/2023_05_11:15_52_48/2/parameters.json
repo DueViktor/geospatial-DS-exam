@@ -1,1 +1,0 @@
-{"num_input_channels": 11, "conv_filters1": 16, "conv_filters2": 32, "conv_filters3": 16, "num_dpoints": 10, "exclude_layer": [11, 12, 13, 14], "exclude_layer_name": "S1-VV-Asc: Cband-10m, S1-VH-Asc: Cband-10m, S1-VV-Desc: Cband-10m, S1-VH-Desc: Cband-10m", "num_epochs": 10}
