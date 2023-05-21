@@ -79,11 +79,15 @@ def get_best_model(idx, data_dir, eval_metrix="val_loss_median", w_index=False):
     # model_outputs/study/[ablation_idx]/[config_idx]
     # This means that this function returns the best model for a given ablation study (fx excluding channel 0 or channel 1 or satellite 2...)
 
-    config_dir = os.listdir(data_dir)[idx]
-
+    config_dir = [i for i in sorted(os.listdir(data_dir)) if '2023' in i][idx]
+    params_dirs = [i for i in sorted(os.listdir(data_dir+'/'+config_dir)) if '.DS_Store' not in i]
+    configs = len(params_dirs)
     dfs = {}
     configurations = {}
-    for config_index in range(len(os.listdir(data_dir + config_dir))):
+
+    
+    for config_index in range(configs):
+        
         df = pd.read_csv(
             data_dir + config_dir + "/" + str(config_index) + "/results.csv"
         )
@@ -152,7 +156,11 @@ def plot_ablation(
     average_validation_rmse_final_epoch = []
     excluded_channel = []
 
-    for config_index in range(len(os.listdir(data_dir))):
+    configs = [i for i in os.listdir(data_dir) if '2023' in i]
+
+    num_configs = len(configs)
+
+    for config_index in range(num_configs):
         results, params = get_best_model(config_index, data_dir)
 
         result_dict[config_index] = results
@@ -312,11 +320,12 @@ def get_best_model_index(idx, data_dir, eval_metrix="val_loss_median"):
     # model_outputs/study/[ablation_idx]/[config_idx]
     # This means that this function returns the best model for a given ablation study (fx excluding channel 0 or channel 1 or satellite 2...)
 
-    config_dir = sorted(os.listdir(data_dir))[idx]
-
+    config_dir = [i for i in sorted(os.listdir(data_dir)) if '2023' in i][idx]
+    params_dirs = [i for i in sorted(os.listdir(data_dir+'/'+config_dir)) if '.DS_Store' not in i]
+    configs = len(params_dirs)
     dfs = {}
     configurations = {}
-    for config_index in range(len(os.listdir(data_dir + config_dir))):
+    for config_index in range(configs):
         df = pd.read_csv(
             data_dir + config_dir + "/" + str(config_index) + "/results.csv"
         )
@@ -349,7 +358,7 @@ def get_model_path(ablation_index, data_dir, bmx=None):
     if not bmx:
         bmx = get_best_model_index(ablation_index, data_dir)
 
-    config_dir = os.listdir(data_dir)[ablation_index]
+    config_dir = [i for i in sorted(os.listdir(data_dir)) if '2023' in i][ablation_index]
 
     return data_dir + config_dir + "/" + str(bmx) + "/model_state_dict"
 
@@ -386,6 +395,7 @@ def get_model_from_path(data_dir, ablation_index=0):
     # standard is to use the full model
 
     results, params, ix = get_best_model(ablation_index, data_dir, w_index=True)
+    
     PATH = get_model_path(ix, data_dir)
     model_args = get_model_args(params)
     model = CNN(**model_args)
