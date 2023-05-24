@@ -4,7 +4,7 @@ Exam project in the course "Geospatial Data Science" Spring 2023. Project was de
 
 ## Training folder
 
-Training this model is a process that takes a long time. Therefore, we have included the trained model in the repository under `model_outputs`. For the same reason, we haven't included any data but instead provided instructions on how to download the data used in this project in `biomassters-download-instructions.txt`. In the folder `large_sample`we have included a sample of the data used in this project. Note that training can be done by running the `train_CNN.py` script. This will train the model and save it in the `model_outputs` folder, but it will take a long time, even on the HPC.
+Training this model is a process that takes a long time. Therefore, we have included the trained model in the repository under `model_outputs`. For the same reason, we haven't included any data but instead provided instructions on how to download the data used in this project in `biomassters-download-instructions.txt`. In the folder `large_sample`we have included a sample of the data used in this project. Note that training can be done by running the `train_CNN.py` script. This will train the model and save it in the `model_outputs` folder, but it will take a long time, even on the HPC. If you decide to train the model yourself, there are some packages that needs to be installed that are not specified in the `requirements.txt` file. The required packages are in the import statements in the files.
 
 ## Presentation_notebook
 
