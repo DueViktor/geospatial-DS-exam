@@ -1,0 +1,381 @@
+commit 27f526f111f05687419c4ff943ebb34a274afba1
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:57:59 2023 +0300
+
+    requirements.txt only hold for presentation_notebook
+
+commit 2ae55b4412fbef81a6e1eb251b79df2d22d0302d
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:38:08 2023 +0300
+
+    legacy cause of example_data
+
+commit 3b9407f59f03cd2138c715e6a71c2fa3142393ca
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:37:36 2023 +0300
+
+    not needed
+
+commit 807d89a2ea6c19f4ba34d063413655c16e016d46
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:32:35 2023 +0300
+
+    explanation of copies and large_sample
+
+commit 60df5c0703b0482dfa5849040babd961e190250a
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:32:21 2023 +0300
+
+    deleted some code that was in markdown mode
+
+commit 6053e567bcbc22f9eb7270f3e98eb17d910eb0d5
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Wed May 24 21:25:44 2023 +0300
+
+    Updated requirements to include a jupyter install
+
+commit e7667dee1c8aa339aa3b6c8e8e69502a9e4aca31
+Author: Askenm <aske.osv@gmail.com>
+Date:   Sun May 21 20:49:28 2023 +0200
+
+    FIXED STUPID BUG THAT MADE IT CRASH ON MAC
+
+commit ca3ce446cdc00ea9470e06548566c5a2a9820001
+Author: askm <askm@itu.dk>
+Date:   Sun May 21 20:19:43 2023 +0200
+
+    subsets
+
+commit 08bf2442ae58c611df7f31c4f867d319cd6fae07
+Author: askm <askm@itu.dk>
+Date:   Sun May 21 17:33:00 2023 +0200
+
+    pushing small changes in pres notebook
+
+commit c991b51eb1402ad7977226f4b4f406feba651682
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:34:51 2023 +0200
+
+    added instructions
+
+commit 5122c170ccd236f95c83afaed085494f81e148e0
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:34:46 2023 +0200
+
+    just a quick formatting
+
+commit ac39999c58103945974258fcbde6055204130507
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:30:34 2023 +0200
+
+    no longer needed
+
+commit dffa9ccd3fbff0b49df432238562bf9b22a0c3dd
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:29:31 2023 +0200
+
+    deleted old notebook and moved download instructions
+
+commit b67268e09ff31e0592faf027f18579017a682617
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:28:28 2023 +0200
+
+    collected files for training
+
+commit 30b11ac46ac6edcb982b7f210af199dd90fce300
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sun May 21 09:26:35 2023 +0200
+
+    delete hpc legacy
+
+commit 4451a760f23e916270bd8ed1a6a37838be72ed6d
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 20 18:08:22 2023 +0200
+
+    formatted and debug
+
+commit 2668d252079f0be206362327eccb03154ba05259
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 20 18:07:44 2023 +0200
+
+    deleted unused files
+
+commit ec29430cee27c7edbbe470bafb36e3941119ac9a
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 20 17:58:44 2023 +0200
+
+    don't push subset files
+
+commit 83ffbc75041d4c6ee1e9e8c247617435e2d7d3ef
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 17:54:32 2023 +0200
+
+    pushing new train_CNN
+
+commit 42edc48fbe2058768a1b12ead5427f706f7f1047
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 17:47:06 2023 +0200
+
+    new requirements
+
+commit 0d3245b27abff7c2407099aa7b22aaeaa15d5d3a
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 16:48:09 2023 +0200
+
+    adding requirements
+
+commit bcbf0771907c1ae48492c18daca316afc858345f
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 16:47:17 2023 +0200
+
+    changes
+
+commit 058b9406143ea91ca95419d50785156b8b14ad6c
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 16:44:55 2023 +0200
+
+    adding pt
+
+commit 039dcdd681a5dd1bca95c7f7862c193210832a53
+Merge: 281089b 6336e4d
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 16:44:30 2023 +0200
+
+    changes
+
+commit 281089b67d206dc7d0dc2d09e31ac2951ddf9b4d
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 16:43:30 2023 +0200
+
+    pushing updated tools
+
+commit 6336e4d1c87dc99bfab65f0d23e6494ffc30dc76
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 20 14:54:39 2023 +0200
+
+    change of title
+
+commit 4bc0fa5af8f1e5dce4d47ff855019550b93630d7
+Merge: 2dc360d 8496564
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 20 13:50:38 2023 +0200
+
+    Merge branch 'main' of github.com:DueViktor/geospatial-DS-exam
+
+commit 849656485ee1d934f03b19b61e4662c4a64bbf38
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 08:28:15 2023 +0200
+
+    pushing notebook, just in case
+
+commit 40d905f539b764dbc941260c517b21b5714a43c2
+Author: askm <askm@itu.dk>
+Date:   Sat May 20 08:23:43 2023 +0200
+
+    adding best model outputs
+
+commit 2dc360dc5cf4d72baedce887b8f765a38680fca3
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 14:28:12 2023 +0200
+
+    formatting and output to assets
+
+commit d459872ccf005856066c825640ec80034c9322d2
+Merge: b2aae3b 7a14507
+Author: askm <askm@itu.dk>
+Date:   Sat May 13 14:17:39 2023 +0200
+
+    Merge branch 'main' of github.com:DueViktor/geospatial-DS-exam
+
+commit b2aae3b196222bff04f694b23f8a8a660c1d8194
+Author: askm <askm@itu.dk>
+Date:   Sat May 13 14:17:15 2023 +0200
+
+    pushing visualization tools
+
+commit 7a14507f53b60350bb41d709a7022a91c27694dd
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 14:15:49 2023 +0200
+
+    structure
+
+commit 62a76f54fbbc82b6ed7fa0b3452fa9d912153aad
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 11:42:09 2023 +0200
+
+    error in filter sizes
+
+commit 7638848fe38a9ce275fbe24d3415c24a734962c4
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 10:58:36 2023 +0200
+
+    improved readability
+
+commit 1fc1141ac6f5468c37a8df9bb66aab22dd531261
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 10:57:23 2023 +0200
+
+    clean up and added assets
+
+commit 8f832cfff106ff7df5295412cc9c9ac74dba87a5
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Sat May 13 10:45:27 2023 +0200
+
+    viktor hpc run
+
+commit d1a91aa8de306a18fe6b54bd4e5ee4537b94bdd5
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Fri May 12 20:21:01 2023 +0200
+
+    mostly formatting
+
+commit 80e5d55235ba4d63e78fc0e0ffdb69a67d859b86
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Fri May 12 16:08:50 2023 +0200
+
+    clean up
+
+commit 375695702702858f42aa40c8e180822626d4ffd4
+Author: askm <askm@itu.dk>
+Date:   Fri May 12 13:37:33 2023 +0200
+
+    pushing viz notebook
+
+commit 99a8ad8c01c1688da382ecd092ef797c500a8161
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Fri May 12 13:19:34 2023 +0200
+
+    yo
+
+commit 167136171ee2432547db40ddfd61ad7d2bd087ce
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Fri May 12 13:11:40 2023 +0200
+
+    new
+
+commit dcea6b22b0a9c93f85be42c801c76a38b9ef3862
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Fri May 12 13:08:47 2023 +0200
+
+    run month experiment
+
+commit c1fc209f84733fa7bcbeb01c174fad7b819ddfd5
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 16:41:09 2023 +0200
+
+    prepare for the satelite ablation
+
+commit 6ff15ea07c824b896db30821ee98790a59aa46e7
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 16:40:37 2023 +0200
+
+    one month at a time
+
+commit 3d84f1922bc64dc887b1109c7bb4a070c9a7e324
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 15:54:46 2023 +0200
+
+    testing pushing to device
+
+commit 211b5ea5e1f7f260e3dd62dfe4912eff9ab69378
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 15:53:36 2023 +0200
+
+    pushing to device for both model and data
+
+commit 1983f7d87d7a621118b0471009dc5bcae501b784
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 14:14:49 2023 +0200
+
+    yo
+
+commit 6993519ac1b60d8d66b1027a2af1faf70134bfa1
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 13:16:31 2023 +0200
+
+    push data to gpu
+
+commit 21cb0ba806bd86afbd5639ec7ab24637b2f37944
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:53:35 2023 +0200
+
+    adding the data for the example notebook
+
+commit 759a5aef785acad48798b03da0d8f0787e45b215
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:52:01 2023 +0200
+
+    consistency
+
+commit 2bbca3aa701ef3b6b6ff894a30e23d4d09606531
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:51:16 2023 +0200
+
+    the setup for model outputs
+
+commit 08972060212794e0db0c9d7ac56a3ea2101c7cc1
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:50:22 2023 +0200
+
+    such that git doesn't go crazy
+
+commit ffe44236e246e2bd07a229938cf10dbb8715702f
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:50:02 2023 +0200
+
+    let's train it on the HPC
+
+commit 64c3bdeaf9187cd3d36e366993d98c90edeb6e50
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:38:16 2023 +0200
+
+    added maxpooling and upsampling
+
+commit 64661f2bfefdcdafc9d374cef56aa8aac9c1fbde
+Merge: 92bb907 25b3768
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:26:42 2023 +0200
+
+    Merge branch 'main' of github.com:DueViktor/geospatial-DS-exam
+
+commit 92bb907c27b09343dc7505c549a4cdb78f480f08
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 12:25:44 2023 +0200
+
+    cnn without pool
+
+commit 25b3768b32f49eb046fe6a04ef976a50b4645efb
+Author: Askenm <47083637+Askenm@users.noreply.github.com>
+Date:   Thu May 11 11:48:04 2023 +0200
+
+    jobs
+
+commit 0b3c344e39d23e830a694cc69af2f730fbf2d4a4
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 11:33:25 2023 +0200
+
+    lfs tracking
+
+commit 3cda3ed0fb85c4272f5e67bb98ba8268caeb91f1
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 09:42:05 2023 +0200
+
+    added data descriptions
+
+commit b1cc7f7b45fade23af17ed978966b6cb55272c87
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 09:41:27 2023 +0200
+
+    Exam info from the course
+
+commit cffbc8538bb3ef26ccc7a1337dc61aabdfc8ad21
+Author: DueViktor <viktorduep@gmail.com>
+Date:   Thu May 11 09:24:30 2023 +0200
+
+    Added formatter
+
+commit cbf6b5ac4c31077b16c6d2df1c8d300e780ead92
+Author: Viktor Due <66885944+DueViktor@users.noreply.github.com>
+Date:   Thu May 11 09:16:02 2023 +0200
+
+    Initial commit
